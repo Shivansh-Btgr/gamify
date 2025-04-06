@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gamify - Battle</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='battle.css') }}">
+</head>
+<body>
+    <!-- Audio player for battle music -->
+    <audio id="battle-music" loop>
+        <source src="{{ url_for('static', filename='assets/battle.mp3') }}" type="audio/mpeg">
+    </audio>
+    
+    <div class="battle-container">
+        <header>
+            <h1>Battle Arena</h1>
+            <div class="header-controls">
+                <button id="music-toggle" class="music-btn"><i class="fas fa-volume-up"></i></button>
+                <a href="{{ url_for('main_menu') }}" class="back-btn">Back to Menu</a>
+            </div>
+        </header>
+        
+        <div class="battle-arena">
+            <div class="monster-container user-monster">
+                <div class="monster-name">{{ name }}'s Monster</div>
+                <div class="monster-sprite" data-monster="{{ user_monster }}"></div>
+                <div class="health-bar">
+                    <div class="health-fill user-health" style="width: 100%"></div>
+                    <span class="health-text">HP: <span id="user-hp-current">{{ user_stats.HP }}</span>/{{ user_stats.HP }}</span>
+                </div>
+                <div class="stats-info">
+                    <div>ATK: {{ user_stats.atk }}</div>
+                    <div>DEF: {{ user_stats.def }}</div>
+                    <div>SpA: {{ user_stats.spA }}</div>
+                    <div>SpD: {{ user_stats.spD }}</div>
+                    <div>SPE: {{ user_stats.Spe }}</div>
+                </div>
+            </div>
+            
+            <div class="versus">VS</div>
+            
+            <div class="monster-container pc-monster">
+                <div class="monster-name">Computer's Monster</div>
+                <div class="monster-sprite" data-monster="{{ pc_monster }}"></div>
+                <div class="health-bar">
+                    <div class="health-fill pc-health" style="width: 100%"></div>
+                    <span class="health-text">HP: <span id="pc-hp-current">{{ pc_stats.HP }}</span>/{{ pc_stats.HP }}</span>
+                </div>
+                <div class="stats-info">
+                    <div>ATK: {{ pc_stats.atk }}</div>
+                    <div>DEF: {{ pc_stats.def }}</div>
+                    <div>SpA: {{ pc_stats.spA }}</div>
+                    <div>SpD: {{ pc_stats.spD }}</div>
+                    <div>SPE: {{ pc_stats.Spe }}</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="battle-controls">
+            {% for move in user_moves %}
+            <button id="{{ move.id }}-btn" class="battle-btn move-btn" data-move="{{ move.id }}">{{ move.name }}</button>
+            {% endfor %}
+        </div>
+        
+        <div id="battle-log" class="battle-log">
+            <p>Battle started! Choose your move...</p>
+        </div>
+    </div>
+
+    <script>
+        // Store battle data
+        const battleData = {
+            userStats: {
+                HP: {{ user_stats.HP }},
+                maxHP: {{ user_stats.HP }},
+                atk: {{ user_stats.atk }},
+                def: {{ user_stats.def }},
+                spA: {{ user_stats.spA }},
+                spD: {{ user_stats.spD }},
+                Spe: {{ user_stats.Spe }}
+            },
+            pcStats: {
+                HP: {{ pc_stats.HP }},
+                maxHP: {{ pc_stats.HP }},
+                atk: {{ pc_stats.atk }},
+                def: {{ pc_stats.def }},
+                spA: {{ pc_stats.spA }},
+                spD: {{ pc_stats.spD }},
+                Spe: {{ pc_stats.Spe }}
+            },
+            userMonster: "{{ user_monster }}",
+            pcMonster: "{{ pc_monster }}",
+            userMoves: {{ user_moves|tojson }},
+            pcMoves: {{ pc_moves|tojson }},
+            isUserTurn: true,
+            isGameOver: false,
+            lastDamageTaken: 0
+        };
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script src="{{ url_for('static', filename='battle.js') }}"></script>
+</body>
+</html>

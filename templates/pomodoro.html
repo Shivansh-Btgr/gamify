@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gamify - Pomodoro Timer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='pomodoro.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="pomodoro-container">
+        <header>
+            <h1>Pomodoro Timer</h1>
+            <a href="{{ url_for('main_menu') }}" class="back-btn">Back to Menu</a>
+        </header>
+        
+        <div class="timer-container">
+            <div class="timer-display">
+                <span id="minutes">25</span>:<span id="seconds">00</span>
+            </div>
+            
+            <div class="timer-progress">
+                <div id="progress-bar" class="progress-fill"></div>
+            </div>
+            
+            <div class="mode-selector">
+                <button id="pomodoro-btn" class="mode-btn active" data-time="25">Pomodoro</button>
+                <button id="short-break-btn" class="mode-btn" data-time="5">Short Break</button>
+                <button id="long-break-btn" class="mode-btn" data-time="15">Long Break</button>
+            </div>
+            
+            <div class="timer-controls">
+                <button id="start-btn" class="control-btn">
+                    <i class="fas fa-play"></i>
+                </button>
+                <button id="pause-btn" class="control-btn" disabled>
+                    <i class="fas fa-pause"></i>
+                </button>
+                <button id="reset-btn" class="control-btn">
+                    <i class="fas fa-redo-alt"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="session-info">
+            <div class="sessions-container">
+                <h2>Sessions Completed</h2>
+                <div class="session-counter">
+                    <span id="session-count">0</span> / <span id="target-sessions">4</span>
+                </div>
+                <div class="session-icons" id="session-icons">
+                    <!-- Session icons will be added here dynamically -->
+                </div>
+                <div class="instructions">
+                    <p>Complete focus sessions to earn stat bonuses.</p>
+                    <p>After each session, you'll get to choose which stat to improve.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="completion-message" id="completion-message">
+            <div class="message-content">
+                <h3>Great Job!</h3>
+                <p>You've completed <span id="completed-count">0</span> Pomodoro sessions!</p>
+                <button id="claim-reward-btn" class="reward-btn">Claim Your Rewards</button>
+            </div>
+        </div>
+        
+        <!-- New stat selection modal -->
+        <div class="stat-selection-modal" id="stat-selection-modal">
+            <div class="modal-content">
+                <h3>Choose Your Reward</h3>
+                <p>Select which stat to improve:</p>
+                <div class="stat-options">
+                    <button class="stat-option-btn" data-stat="HP">HP (+1)</button>
+                    <button class="stat-option-btn" data-stat="atk">Attack (+0.5)</button>
+                    <button class="stat-option-btn" data-stat="def">Defense (+0.5)</button>
+                    <button class="stat-option-btn" data-stat="spA">Sp. Attack (+0.5)</button>
+                    <button class="stat-option-btn" data-stat="spD">Sp. Defense (+0.5)</button>
+                    <button class="stat-option-btn" data-stat="Spe">Speed (+0.5)</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="{{ url_for('static', filename='pomodoro.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gamify - GitHub Tracking</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='github.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="github-container">
+        <header>
+            <h1>GitHub Commit Tracker</h1>
+            <a href="{{ url_for('main_menu') }}" class="back-btn">Back to Menu</a>
+        </header>
+        
+        <div class="github-content">
+            <div id="username-form-container" class="form-section {% if github_username %}hidden{% endif %}">
+                <h2>Link Your GitHub Account</h2>
+                <p>Enter your GitHub username to start tracking your commits.</p>
+                
+                <form id="username-form">
+                    <div class="input-group">
+                        <i class="fab fa-github"></i>
+                        <input type="text" id="github-username" placeholder="GitHub Username" value="{{ github_username }}" required>
+                    </div>
+                    <button type="submit" class="submit-btn">Link Account</button>
+                </form>
+            </div>
+            
+            <div id="profile-section" class="profile-section {% if not github_username %}hidden{% endif %}">
+                <div class="profile-header">
+                    <div class="profile-details">
+                        <h2>Welcome, <span id="profile-username">{{ github_username }}</span></h2>
+                        <div class="last-update">Last checked: <span id="last-update-time">{{ last_update }}</span></div>
+                    </div>
+                    <button id="refresh-btn" class="refresh-btn"><i class="fas fa-sync-alt"></i> Refresh Stats</button>
+                </div>
+                
+                <div class="profile-info">
+                    <div class="profile-avatar">
+                        <img id="avatar-img" src="{{ github_avatar|default('/static/assets/github-placeholder.png') }}" alt="GitHub Avatar">
+                    </div>
+                    <div class="profile-bio" id="profile-bio">
+                        {{ github_bio|default('No bio available') }}
+                    </div>
+                </div>
+                
+                <div class="stats-cards">
+                    <div class="stats-card total-commits">
+                        <div class="card-icon"><i class="fas fa-code-commit"></i></div>
+                        <div class="card-content">
+                            <h3>Total Commits</h3>
+                            <div class="stat-value" id="total-commits">{{ commits_stats.total|default('0') }}</div>
+                            <div class="stat-change" id="commits-change">
+                                {% if commits_diff and commits_diff > 0 %}
+                                <span class="positive">+{{ commits_diff }}</span>
+                                {% else %}
+                                <span>No new commits</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="stats-card recent">
+                        <div class="card-icon"><i class="fas fa-history"></i></div>
+                        <div class="card-content">
+                            <h3>Recent Activity</h3>
+                            <div class="stat-value" id="recent-activity">{{ commits_stats.recent|default('0') }}</div>
+                            <div class="stat-desc">commits this week</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stats-card streak">
+                        <div class="card-icon"><i class="fas fa-fire"></i></div>
+                        <div class="card-content">
+                            <h3>Current Streak</h3>
+                            <div class="stat-value" id="current-streak">{{ commits_stats.streak|default('0') }}</div>
+                            <div class="stat-desc">days in a row</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="commit-history">
+                    <h3>Recent Commits</h3>
+                    <div id="commits-list" class="commits-list">
+                        {% if recent_commits %}
+                            {% for commit in recent_commits %}
+                            <div class="commit-item">
+                                <div class="commit-repo">{{ commit.repo }}</div>
+                                <div class="commit-message">{{ commit.message }}</div>
+                                <div class="commit-date">{{ commit.date }}</div>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="no-commits">No recent commits found.</div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="rewards-section">
+                    <h2>Rewards Earned</h2>
+                    <div class="rewards-info">
+                        <p id="no-rewards" class="{% if not rewards %}visible{% else %}hidden{% endif %}">Make more commits to earn rewards!</p>
+                        
+                        <div id="rewards-list" class="rewards-list {% if not rewards %}hidden{% endif %}">
+                            {% for reward in rewards %}
+                            <div class="reward-item">
+                                <div class="reward-stat">{{ reward.stat }}</div>
+                                <div class="reward-value">+{{ reward.value }}</div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        
+                        <button id="claim-rewards-btn" class="claim-btn {% if not rewards %}hidden{% endif %}">Claim Rewards</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="github-info">
+                <h3>How it works:</h3>
+                <ul>
+                    <li>Link your GitHub account to start tracking your coding activity</li>
+                    <li>Each commit earns you stat rewards</li>
+                    <li>Longer streaks give bonus rewards</li>
+                    <li>More active repositories increase your programming diversity</li>
+                    <li>Come back and click refresh to claim your rewards!</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Loading overlay -->
+        <div id="loading-overlay" class="loading-overlay hidden">
+            <div class="spinner"></div>
+            <div class="loading-text">Fetching GitHub data...</div>
+        </div>
+    </div>
+    
+    <script src="{{ url_for('static', filename='github.js') }}"></script>
+</body>
+</html>

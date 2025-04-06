@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gamify - Main Menu</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main_menu.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="menu-container">
+        <header>
+            <h1>Welcome, {{ name }}!</h1>
+            <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+        </header>
+        
+        <div class="stats-container">
+            <h2>Your Character Stats</h2>
+            <div class="stats-display">
+                <div class="stats-chart">
+                    <canvas id="statsChart"></canvas>
+                </div>
+                <div class="stats-details">
+                    <div class="stat-item">
+                        <span class="stat-label">HP:</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill hp" style="width: {{ (stats.HP|default(20)) * 5 }}%"></div>
+                            <span id="hp-value" class="stat-value">{{ stats.HP|default(20) }}</span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Attack:</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill atk" style="width: {{ (stats.atk|default(5)) * 20 }}%"></div>
+                            <span id="atk-value" class="stat-value">{{ stats.atk|default(5) }}</span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Defense:</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill def" style="width: {{ (stats.def|default(5)) * 20 }}%"></div>
+                            <span id="def-value" class="stat-value">{{ stats.def|default(5) }}</span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Sp. Attack:</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill spa" style="width: {{ (stats.spA|default(5)) * 20 }}%"></div>
+                            <span id="spa-value" class="stat-value">{{ stats.spA|default(5) }}</span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Sp. Defense:</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill spd" style="width: {{ (stats.spD|default(5)) * 20 }}%"></div>
+                            <span id="spd-value" class="stat-value">{{ stats.spD|default(5) }}</span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Speed:</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill spe" style="width: {{ (stats.Spe|default(5)) * 20 }}%"></div>
+                            <span id="spe-value" class="stat-value">{{ stats.Spe|default(5) }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="menu-buttons">
+            <a href="{{ url_for('battle') }}" class="menu-btn">
+                <i class="fas fa-gamepad"></i> Battle
+            </a>
+            <a href="#" class="menu-btn">
+                <i class="fas fa-users"></i> Multiplayer
+            </a>
+        </div>
+        
+        <div class="level-up-container">
+            <button id="level-up-btn" class="level-up-btn">
+                Level Up Activities
+            </button>
+            
+            <div id="activity-buttons" class="activity-buttons-container">
+                <button id="github-btn" class="activity-btn github-btn">
+                    <i class="fab fa-github"></i>
+                    GitHub Coding
+                </button>
+                <button id="leetcode-btn" class="activity-btn leetcode-btn">
+                    <i class="fas fa-code"></i>
+                    LeetCode
+                </button>
+                <button id="pomodoro-btn" class="activity-btn pomodoro-btn">
+                    <i class="fas fa-clock"></i>
+                    Pomodoro
+                </button>
+                <button id="return-btn" class="activity-btn">
+                    <i class="fas fa-arrow-left"></i>
+                    Go Back
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='menu.js') }}"></script>
+</body>
+</html>

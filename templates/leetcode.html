@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gamify - LeetCode Training</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='leetcode.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="leetcode-container">
+        <header>
+            <h1>LeetCode Training</h1>
+            <a href="{{ url_for('main_menu') }}" class="back-btn">Back to Menu</a>
+        </header>
+        
+        <div class="leetcode-content">
+            <div id="username-form-container" class="form-section {% if leetcode_username %}hidden{% endif %}">
+                <h2>Link Your LeetCode Account</h2>
+                <p>Enter your LeetCode username to start tracking your progress.</p>
+                
+                <form id="username-form">
+                    <div class="input-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="leetcode-username" placeholder="LeetCode Username" value="{{ leetcode_username }}" required>
+                    </div>
+                    <button type="submit" class="submit-btn">Link Account</button>
+                </form>
+            </div>
+            
+            <div id="profile-section" class="profile-section {% if not leetcode_username %}hidden{% endif %}">
+                <div class="profile-header">
+                    <div class="profile-details">
+                        <h2>Welcome, <span id="profile-username">{{ leetcode_username }}</span></h2>
+                        <div class="last-update">Last checked: <span id="last-update-time">{{ last_update }}</span></div>
+                    </div>
+                    <button id="refresh-btn" class="refresh-btn"><i class="fas fa-sync-alt"></i> Refresh Stats</button>
+                </div>
+                
+                <div class="stats-cards">
+                    <div class="stats-card total">
+                        <div class="card-icon"><i class="fas fa-code"></i></div>
+                        <div class="card-content">
+                            <h3>Total Solved</h3>
+                            <div class="stat-value" id="total-solved">{{ current_stats.total|default('0') }}</div>
+                            <div class="stat-change" id="total-change">
+                                {% if solved_diff and solved_diff.total > 0 %}
+                                <span class="positive">+{{ solved_diff.total }}</span>
+                                {% else %}
+                                <span>No new problems</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="stats-card easy">
+                        <div class="card-icon"><i class="fas fa-seedling"></i></div>
+                        <div class="card-content">
+                            <h3>Easy</h3>
+                            <div class="stat-value" id="easy-solved">{{ current_stats.easy|default('0') }}</div>
+                            <div class="stat-change" id="easy-change">
+                                {% if solved_diff and solved_diff.easy > 0 %}
+                                <span class="positive">+{{ solved_diff.easy }}</span>
+                                {% else %}
+                                <span>No new problems</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="stats-card medium">
+                        <div class="card-icon"><i class="fas fa-bolt"></i></div>
+                        <div class="card-content">
+                            <h3>Medium</h3>
+                            <div class="stat-value" id="medium-solved">{{ current_stats.medium|default('0') }}</div>
+                            <div class="stat-change" id="medium-change">
+                                {% if solved_diff and solved_diff.medium > 0 %}
+                                <span class="positive">+{{ solved_diff.medium }}</span>
+                                {% else %}
+                                <span>No new problems</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="stats-card hard">
+                        <div class="card-icon"><i class="fas fa-fire"></i></div>
+                        <div class="card-content">
+                            <h3>Hard</h3>
+                            <div class="stat-value" id="hard-solved">{{ current_stats.hard|default('0') }}</div>
+                            <div class="stat-change" id="hard-change">
+                                {% if solved_diff and solved_diff.hard > 0 %}
+                                <span class="positive">+{{ solved_diff.hard }}</span>
+                                {% else %}
+                                <span>No new problems</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="rewards-section">
+                    <h2>Rewards Earned</h2>
+                    <div class="rewards-info">
+                        <p id="no-rewards" class="{% if not rewards %}visible{% else %}hidden{% endif %}">Solve more LeetCode problems to earn rewards!</p>
+                        
+                        <div id="rewards-list" class="rewards-list {% if not rewards %}hidden{% endif %}">
+                            {% for reward in rewards %}
+                            <div class="reward-item">
+                                <div class="reward-stat">{{ reward.stat }}</div>
+                                <div class="reward-value">+{{ reward.value }}</div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        
+                        <button id="claim-rewards-btn" class="claim-btn {% if not rewards %}hidden{% endif %}">Claim Rewards</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="leetcode-info">
+                <h3>How it works:</h3>
+                <ul>
+                    <li>Link your LeetCode account to start tracking your progress</li>
+                    <li>Solve problems on LeetCode to earn rewards</li>
+                    <li>Easy problems: +0.5 to a random stat</li>
+                    <li>Medium problems: +1.0 to a random stat</li>
+                    <li>Hard problems: +2.0 to a random stat</li>
+                    <li>Come back and click refresh to claim your rewards!</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Loading overlay -->
+        <div id="loading-overlay" class="loading-overlay hidden">
+            <div class="spinner"></div>
+            <div class="loading-text">Fetching LeetCode data...</div>
+        </div>
+    </div>
+    
+    <script src="{{ url_for('static', filename='leetcode.js') }}"></script>
+</body>
+</html>

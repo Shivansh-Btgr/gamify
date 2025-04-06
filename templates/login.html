@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gamify - Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="bg"></div>
+        <div class="form-container">
+            <form id="login-form" class="login-form">
+                <h2 class="heading">Login Here</h2>
+
+                <label for="login-email">Email: </label>
+                <input type="email" id="login-email" name="email" required>
+
+                <label for="login-password">Password: </label>
+                <input type="password" id="login-password" name="password" required>
+
+                <div id="login-error" class="error-message"></div>
+                <button class="login-btn" type="submit">Login</button>
+                <span class="toggle-btn">Don't have an account?</span>
+            </form>
+
+            <form id="signup-form" class="signup-form">
+                <h2 class="heading">Sign Up</h2>
+
+                <label for="signup-name">Name: </label>
+                <input type="text" id="signup-name" name="name" required>
+
+                <label for="signup-email">Email: </label>
+                <input type="email" id="signup-email" name="email" required>
+
+                <label for="signup-password">Password: </label>
+                <input type="password" id="signup-password" name="password" required>
+
+                <label for="signup-confirm-password">Confirm Password: </label>
+                <input type="password" id="signup-confirm-password" name="confirm_password" required>
+
+                <div id="signup-error" class="error-message"></div>
+                <button class="login-btn" type="submit">Sign Up</button>
+                <span class="toggle-btn">Already have an account?</span>
+            </form>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
